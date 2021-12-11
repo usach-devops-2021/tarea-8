@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres:9.6
+    container_name: diplo-devops
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_pass
+      PGDATA: /data/postgres
+      POSTGRES_MULTIPLE_DATABASES: test
+    volumes:
+      - ./.docker/postgres:/data/postgres
+      - ./util/psql-db.sh:/docker-entrypoint-initdb.d/psql-db.sh
+    ports:
+      - "3306:5432"
+    networks:
+      - be-devops
+    restart: unless-stopped
+      
+networks:
+  be-devops:
+    driver: bridge
